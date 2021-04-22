@@ -44,15 +44,23 @@ class _ChangeFormState extends State<ChangeForm> {
         padding: const EdgeInsets.all(50.0),
         child: Column(
           children: <Widget>[
-            Text(
-                (_status ? "録音中" : "録音待機"),
-              style: TextStyle(
-                color:Colors.greenAccent,
-                fontSize: 40.0,
-                fontWeight: FontWeight.w600,
-                fontFamily: "RondeB",
-              )
-            )
+            Text((_status ? "録音中" : "録音待機"),
+                style: TextStyle(
+                  color: Colors.greenAccent,
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "RondeB",
+                )),
+            TextButton(
+                onPressed: _handlePressed,
+                style: TextButton.styleFrom(
+                  primary: Colors.blue,
+                  backgroundColor: Colors.tealAccent,
+                  shadowColor: Colors.teal,
+                  elevation: 5,
+                ),
+                child: Text("更新",
+                    style: TextStyle(color: Colors.white, fontSize: 20.0)))
           ],
         ));
   }
