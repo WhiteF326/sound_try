@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:record/record.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,9 +35,41 @@ class ChangeForm extends StatefulWidget {
 class _ChangeFormState extends State<ChangeForm> {
   bool _status = false;
 
+  void _startRecording() async {
+    // 録音を開始する
+    bool result = await Record.hasPermission();
+    final directory = await getApplicationDocumentsDirectory();
+    String pathToWrite = directory.path;
+    await Record.start(
+      path: pathToWrite + "/kari.m4a",
+      encoder: AudioEncoder.AAC,
+      bitRate: 128000,
+      samplingRate: 44100,
+    );
+  }
+
+  void _stopRecording() async {
+    // 録音を停止する
+    await Record.stop();
+  }
+
+  void _startPlaying() async {
+    // 再生する
+    AudioPlayer audioPlayer = AudioPlayer();
+    final directory = await getApplicationDocumentsDirectory();
+    String pathToWrite = directory.path;
+    int result = await audioPlayer.play(pathToWrite + "/kari.m4a", isLocal: true);
+  }
+
   void _handlePressed() {
-    setState(() {
+    setState((){
       _status = !_status;
+      if (_status) {
+        _startRecording();
+      } else {
+        _stopRecording();
+        _startPlaying();
+      }
     });
   }
 
